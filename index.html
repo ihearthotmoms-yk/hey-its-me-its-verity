@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hey it's me its phasity</title>
+    <style>
+        /* Base Configuration */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            color: #b0b0b0;
+            overflow: hidden;
+        }
+
+        /* 1 & 2: LOADING GATE SCREEN */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            cursor: pointer;
+            transition: opacity 0.8s ease-out;
+        }
+
+        /* Pure CSS Loading Spinner */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Fade-in Prompt Text */
+        .prompt-text {
+            color: #888888;
+            font-size: 14px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .prompt-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 3: MAIN CONTAINER & PARTICLES */
+        #main-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-in;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 20px;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* DASHBOARD GRID LAYOUT */
+        .dashboard {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 300px 300px 400px;
+            gap: 20px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        /* CARD STYLING */
+        .card {
+            background-color: #0b0b0b;
+            border: 1px solid #1c1c1c;
+            border-radius: 4px;
+            padding: 20px;
+        }
+
+        .card-header {
+            font-size: 11px;
+            color: #555555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #141414;
+            padding-bottom: 5px;
+        }
+
+        /* ABOUT CARD */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background: #222;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .profile-info h2 {
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .status-dot {
+            font-size: 11px;
+            color: #777;
+        }
+
+        .status-dot::before {
+            content: "●";
+            color: #ff3333;
+            margin-right: 5px;
+        }
+
+        .sub-bar {
+            background: #111;
+            padding: 6px 10px;
+            font-size: 12px;
+            border-left: 2px solid #ff3366;
+            margin-bottom: 15px;
+        }
+
+        .bio-text {
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #141414;
+            border: 1px solid #222;
+            padding: 3px 8px;
+            font-size: 11px;
+            border-radius: 2px;
+        }
+
+        /* LISTS (SOCIALS & FRIENDS) */
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            padding: 8px 0;
+            border-bottom: 1px solid #121212;
+            text-decoration: none;
+            color: #b0b0b0;
+        }
+        
+        a.list-item:hover {
+            color: #ffffff;
+            background: #111;
+            padding-left: 5px;
+        }
+
+        .list-item .value {
+            color: #555;
+        }
+
+        /* MUSIC PLAYER */
+        .player-now-playing {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .album-art {
+            width: 60px;
+            height: 60px;
+            background: #181818;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .track-meta h3 {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .track-meta p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #111;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+
+        .track-list {
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        .track-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #121212;
+        }
+
+        .track-row:hover, .track-row.active {
+            background: #141414;
+            color: #fff;
+        }
+
+        .track-num { color: #444; width: 20px; }
+
+        /* Responsive handling */
+        @media (max-width: 1000px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+                padding-bottom: 40px;
+            }
+            #main-content { overflow-y: scroll; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1 & 2: LOADING GATE SCREEN -->
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <div class="prompt-text" id="prompt">just click anywhere, idiot.</div>
+    </div>
+
+    <!-- BACKGROUND FLOATING PARTICLES -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- 3: MAIN LAYOUT CONTENT -->
+    <div id="main-content">
+        <div class="dashboard">
+            
+            <!-- LEFT COLUMN: ABOUT & SOCIALS -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- ABOUT CARD -->
+                <div class="card">
+                    <div class="card-header">about</div>
+                    <div class="profile-section">
+                        <div class="avatar">🐱</div>
+                        <div class="profile-info">
+                            <h2>phases</h2>
+                            <div class="status-dot">im never online</div>
+                        </div>
+                    </div>
+                    <div class="bio-text">
+                       webdev, I only build stuff when im bored. <br>
+                       Also I like Klavier Gavin from Ace Attorney <br>
+                       "Achtung baby! Today we play it my way!" - Klavier GOATvin
+                    </div>
+                    <div class="tags">
+                        <span class="tag">hey its me its verity</span>
+                        <span class="tag">web dev</span>
+                        <span class="tag">i use vs code :p</span>
+                        <span class="tag">tech</span>
+                        <span class="tag">gaming</span>
+                    </div>
+                </div>
+
+                <!-- SOCIALS CARD -->
+                <div class="card">
+                    <div class="card-header">socials</div>
+                    <a href="#" class="list-item"><span>tiktok</span><span class="value">@peteyssecretlab</span></a>
+                    <a href="#" class="list-item"><span>discord</span><span class="value">@gghcia</span></a>
+                    <a href="#" class="list-item"><span>cuties</span><span class="value">GODOT</span></a>
+                    <a href="#" class="list-item"><span>github</span><span class="value">@ihearthotmoms-yk (NEW ACC SO NOTHINGS THERE YET BRU)</span></a>
+                </div>
+            </div>
+
+            <!-- MIDDLE COLUMN: FRIENDS -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="card" style="height: 100%;">
+                    <div class="card-header">friends</div>
+                    <div class="list-item"><span>Koya</span></div>
+                    <div class="list-item"><span>Lyn</span></div>
+                    <div class="list-item"><span>Seer</span></div>
+                    <div class="list-item"><span>Mac n Booty Cheeks</span></div>
+                    <div class="list-item"><span>Noir</span></div>
+                    <div class="list-item"><span>Charles</span></div>
+                </div>
+            </div>
+
+              <!-- RIGHT COLUMN: MUSIC INTERACTIVE PLAYER -->
+    <div>
+        <div class="card">
+            <div class="card-header">music - <span id="header-track-title">Send the pain below</span></div>
+            <div class="player-now-playing">
+                <div class="album-art" id="player-art" style="font-size: 24px;">🎵</div>
+                <div class="track-meta">
+                    <h3 id="current-title">Send the pain below</h3>
+                    <p id="current-artist">Chevelle</p>
+                </div>
+            </div>
+            
+            <div class="player-controls">
+                <span id="time-current">0:00</span>
+                <!-- Hidden native audio element -->
+                <audio id="audio-element" src=""></audio>
+                <!-- Play button container -->
+                <button id="play-btn" style="background:none; border:none; color:#fff; font-family:monospace; cursor:pointer; font-size:14px; padding:0 10px;">[PLAY]</button>
+                <span id="time-total">0:00</span>
+            </div>
+
+            <!-- Add your song list array right inside the HTML block using data attributes -->
+            <div class="track-list" id="playlist-container">
+                <!-- 
+                  How to add songs:
+                  Change data-src to direct URLs pointing to your mp3 files.
+                  Change data-title, data-artist, and data-art for each track.
+                -->
+                <div class="track-row active" 
+                     data-src="https://soundhelix.com" 
+                     data-title="Send the pain below" 
+                     data-artist="Chevelle" 
+                     data-art="🎸">
+                    <span class="track-num">21</span>
+                    <div>
+                        <div>Send the pain below</div>
+                        <div style="font-size:10px; color:#555;">Chevelle</div>
+                    </div>
+                </div>
+
+                <div class="track-row" 
+                     data-src="https://soundhelix.com" 
+                     data-title="Alberto Balsalm" 
+                     data-artist="Aphex Twin" 
+                     data-art="🎹">
+                    <span class="track-num">01</span>
+                    <div>
+                        <div>Alberto Balsalm</div>
+                        <div style="font-size:10px; color:#555;">Aphex Twin</div>
+                    </div>
+                </div>
+
+                <div class="track-row" 
+                     data-src="https://soundhelix.com" 
+                     data-title="Warmpop" 
+                     data-artist="ESPRIT 空想" 
+                     data-art="🌌">
+                    <span class="track-num">02</span>
+                    <div>
+                        <div>Warmpop</div>
+                        <div style="font-size:10px; color:#555;">ESPRIT 空想</div>
+                    </div>
+                </div>
+
+                <div class="track-row" 
+                     data-src="https://soundhelix.com" 
+                     data-title="Black Hole Sun" 
+                     data-artist="Soundgarden" 
+                     data-art="🕳️">
+                    <span class="track-num">03</span>
+                    <div>
+                        <div>Black Hole Sun</div>
+                        <div style="font-size:10px; color:#555;">Soundgarden</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+       <!-- ALL JAVASCRIPT GOES RIGHT HERE AT THE BOTTOM -->
+    <script>
+        // --- 1 & 2: Loading Screen Logic ---
+        const loadingScreen = document.getElementById('loading-screen');
+        const promptText = document.getElementById('prompt');
+        const mainContent = document.getElementById('main-content');
+
+        setTimeout(() => {
+            promptText.classList.add('visible');
+            
+            loadingScreen.addEventListener('click', () => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    mainContent.style.visibility = 'visible';
+                    mainContent.style.opacity = '1';
+                }, 800);
+            });
+        }, 5000);
+
+        // --- 3: Floating White Particles Logic ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = 60;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // --- 4: Interactive Music Player Logic ---
+        const audio = document.getElementById('audio-element');
+        const playBtn = document.getElementById('play-btn');
+        const timeCurrent = document.getElementById('time-current');
+        const timeTotal = document.getElementById('time-total');
+        const currentTitle = document.getElementById('current-title');
+        const currentArtist = document.getElementById('current-artist');
+        const headerTrackTitle = document.getElementById('header-track-title');
+        const playerArt = document.getElementById('player-art');
+        const trackRows = document.querySelectorAll('.track-row');
+
+        function loadTrack(row) {
+            trackRows.forEach(r => r.classList.remove('active'));
+            row.classList.add('active');
+            
+            audio.src = row.getAttribute('data-src');
+            currentTitle.innerText = row.getAttribute('data-title');
+            currentArtist.innerText = row.getAttribute('data-artist');
+            headerTrackTitle.innerText = row.getAttribute('data-title');
+            playerArt.innerText = row.getAttribute('data-art');
+        }
+
+        // Load the first song automatically
+        if (trackRows.length > 0) {
+            loadTrack(trackRows[0]);
+        }
+
+        playBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerText = '[PAUSE]';
+            } else {
+                audio.pause();
+                playBtn.innerText = '[PLAY]';
+            }
+        });
+
+        trackRows.forEach(row => {
+            row.addEventListener('click', function() {
+                loadTrack(this);
+                audio.play();
+                playBtn.innerText = '[PAUSE]';
+            });
+        });
+
+        function formatTime(secs) {
+            if (isNaN(secs)) return "0:00";
+            const minutes = Math.floor(secs / 60);
+            const seconds = Math.floor(secs % 60);
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        audio.addEventListener('timeupdate', () => {
+            timeCurrent.innerText = formatTime(audio.currentTime);
+        });
+
+        audio.addEventListener('loadedmetadata', () => {
+            timeTotal.innerText = formatTime(audio.duration);
+        });
+
+        audio.addEventListener('ended', () => {
+            let activeRowIndex = Array.from(trackRows).findIndex(r => r.classList.contains('active'));
+            let nextRowIndex = (activeRowIndex + 1) % trackRows.length;
+            loadTrack(trackRows[nextRowIndex]);
+            audio.play();
+        });
+    </script>
