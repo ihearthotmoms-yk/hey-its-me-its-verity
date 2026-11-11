@@ -7,7 +7,7 @@
     <title>hey it's me its phasity</title>
     <link rel="icon" href="img bru/klavier chi.webp" type="image/x-icon">
     <style>
-        /* Base Configuration */
+        /* so it works broski */
         * {
             margin: 0;
             padding: 0;
@@ -24,7 +24,7 @@
             overflow: hidden;
         }
 
-        /* 1 & 2: LOADING GATE SCREEN */
+        /* loading screen boi */
         #loading-screen {
             position: fixed;
             top: 0;
@@ -41,7 +41,7 @@
             transition: opacity 0.8s ease-out;
         }
 
-        /* Pure CSS Loading Spinner */
+        /* spinner */
         .spinner {
             width: 50px;
             height: 50px;
@@ -58,7 +58,7 @@
             }
         }
 
-        /* Fade-in Prompt Text */
+        /* idiot */
         .prompt-text {
             color: #888888;
             font-size: 14px;
@@ -72,7 +72,7 @@
             transform: translateY(0);
         }
 
-        /* 3: MAIN CONTAINER & PARTICLES */
+        /* ani */
         #main-content {
             position: relative;
             width: 100%;
@@ -98,7 +98,7 @@
             pointer-events: none;
         }
 
-        /* DASHBOARD GRID LAYOUT */
+        /* dashboard */
         .dashboard {
             position: relative;
             z-index: 2;
@@ -109,7 +109,7 @@
             width: 100%;
         }
 
-        /* CARD STYLING */
+        /* cards styling */
         .card {
             background-color: #0b0b0b;
             border: 1px solid #1c1c1c;
@@ -127,7 +127,7 @@
             padding-bottom: 5px;
         }
 
-        /* ABOUT CARD */
+        /* abt me card */
         .profile-section {
             display: flex;
             align-items: center;
@@ -197,7 +197,7 @@
             border-radius: 2px;
         }
 
-        /* LISTS (SOCIALS & FRIENDS) */
+        /* socials and friends */
         .list-item {
             display: flex;
             justify-content: space-between;
@@ -218,7 +218,7 @@
             color: #555;
         }
 
-        /* MUSIC PLAYER */
+        /* MUSICAAAAAAA */
         .player-now-playing {
             display: flex;
             gap: 15px;
@@ -299,7 +299,7 @@
             width: 20px;
         }
 
-        /* Responsive handling */
+        /* SO IT FUCKING WORKS */
         @media (max-width: 1000px) {
             .dashboard {
                 grid-template-columns: 1fr;
@@ -315,20 +315,20 @@
 
 <body>
 
-    <!-- 1 & 2: LOADING GATE SCREEN -->
+    <!--gate screen -->
     <div id="loading-screen">
         <div class="spinner"></div>
         <div class="prompt-text" id="prompt">just click anywhere, idiot.</div>
     </div>
 
-    <!-- BACKGROUND FLOATING PARTICLES -->
+    <!--white stars -->
     <canvas id="particle-canvas"></canvas>
 
-    <!-- 3: MAIN LAYOUT CONTENT -->
+    <!-- main layout  -->
     <div id="main-content">
         <div class="dashboard">
 
-            <!-- LEFT COLUMN: ABOUT & SOCIALS -->
+            <!-- left: socials and friends -->
             <div style="display: flex; flex-direction: column; gap: 20px;">
                 <!-- ABOUT CARD -->
                 <div class="card">
@@ -354,7 +354,7 @@
                     </div>
                 </div>
 
-                <!-- SOCIALS CARD -->
+                <!-- SOCIALS  -->
                 <div class="card">
                     <div class="card-header">socials</div>
                     <a href="#" class="list-item"><span>tiktok</span><span class="value">@peteyssecretlab</span></a>
@@ -365,7 +365,7 @@
                 </div>
             </div>
 
-            <!-- MIDDLE COLUMN: FRIENDS -->
+            <!-- FRIENDS -->
             <div style="display: flex; flex-direction: column; gap: 20px;">
                 <div class="card" style="height: 100%;">
                     <div class="card-header">friends</div>
@@ -373,21 +373,30 @@
                         <span>Koya</span>
                         <span class="value">↗</span>
                     </a>
-                    <div class="list-item"><span>Lyn</span></div>
+                    <a href=" https://nyverin.straw.page/" target="_blank" class="list-item">
+                        <span>Lyn (Yuki)</span>
+                        <span class="value">↗</span>
+                    </a>
                     <div class="list-item"><span>Seer</span></div>
                     <div class="list-item"><span>Mac n Booty Cheeks</span></div>
-                    <a href="https://dreamcore-dolls.straw.page/" target="_blank" class="list-item">
-                        <span>Noir (DDC)</span>
+                    <a href="https://harucurez.straw.page/" target="_blank" class="list-item">
+                        <span>Haru</span>
                         <span class="value">↗</span>
-                    </a>
-                    <a href="https://viktorrules.straw.page/" target="_blank" class="list-item">
-                        <span>Charles</span>
-                        <span class="value">↗</span>
-                    </a>
+                        <a href="https://dreamcore-dolls.straw.page/" target="_blank" class="list-item">
+                            <span>Noir (DDC)</span>
+                            <span class="value">↗</span>
+                            <a href="https://viktorrules.straw.page/" target="_blank" class="list-item">
+                            <span>Charles</span>
+                            <span class="value">↗</span>
+                        </a>
+                        <a href="https://manjuxangel.straw.page/" target="_blank" class="list-item">
+                            <span>Manju</span>
+                            <span class="value">↗</span>
+                        </a>
                 </div>
             </div>
 
-            <!-- RIGHT COLUMN: MUSIC INTERACTIVE PLAYER -->
+            <!-- MUSIC -->
             <div>
                 <div class="card">
                     <div class="card-header">music - <span id="header-track-title">no song yet bro</span></div>
@@ -403,9 +412,9 @@
 
                     <div class="player-controls">
                         <span id="time-current">0:00</span>
-                        <!-- Hidden native audio element -->
+
                         <audio id="audio-element" preload="metadata"></audio>
-                        <!-- Play button container -->
+
                         <button id="play-btn"
                             style="background:none; border:none; color:#fff; font-family:monospace; cursor:pointer; font-size:14px; padding:0 10px;">[PLAY]</button>
                         <span id="time-total">0:00</span>
@@ -414,11 +423,7 @@
 
                     <!-- songs brooooo -->
                     <div class="track-list" id="playlist-container">
-                        <!--
-                  How to add songs:
-                  Change data-src to direct URLs pointing to your mp3 files.
-                  Change data-title, data-artist, and data-art for each track.
-                -->
+
                         <div class="track-row active" data-src="songs/lades.mp3" data-title="La Despedida"
                             data-artist="Daddy Yankee" data-art-image="img bru/lades.jpeg">
                             <span class="track-num">01</span>
@@ -468,9 +473,9 @@
             </div>
         </div>
 
-        <!-- ALL JAVASCRIPT GOES RIGHT HERE AT THE BOTTOM -->
+        <!-- js stuff -->
         <script>
-            // --- 1 & 2: Loading Screen Logic ---
+            // ---  Loading Screen Logic ---
             const loadingScreen = document.getElementById('loading-screen');
             const promptText = document.getElementById('prompt');
             const mainContent = document.getElementById('main-content');
@@ -488,7 +493,7 @@
                 });
             }, 5000);
 
-            // --- 3: Floating White Particles Logic ---
+            // --- : Floating White Particles Logic ---
             const canvas = document.getElementById('particle-canvas');
             const ctx = canvas.getContext('2d');
             let particles = [];
@@ -598,7 +603,7 @@
                 });
             }
 
-            // Load the first song automatically
+            // loads first song boiii
             if (trackRows.length > 0) {
                 loadTrack(trackRows[0]);
             }
